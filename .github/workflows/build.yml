@@ -1,0 +1,25 @@
+name: Build Windows Executable
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install -r requirements.txt
+      - run: pip install pyinstaller
+      - run: pyinstaller --onefile fedprada_module3.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Windows-Executable
+          path: dist/fedprada_module3.exe
